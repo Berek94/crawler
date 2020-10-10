@@ -4,12 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "PORT=8888 nodemon ./src/index.js",
+    "dev": "nodemon ./src/index.js",
     "start": "node ./src/index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "puppeteer": "^5.3.1"
   },
