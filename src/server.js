@@ -1,6 +1,6 @@
 const express = require("express");
 const puppeteer = require("puppeteer");
-const { googleSearch, delay } = require("./helpers");
+const { googleSearch } = require("./helpers");
 
 const startSever = ({ port }) => {
   const server = express();
@@ -23,7 +23,11 @@ const startSever = ({ port }) => {
 
       browser.close();
 
-      res.json({ usd, eur });
+      if (usd && eur) {
+        res.json({ usd, eur });
+      } else {
+        throw new Error("Ошибка");
+      }
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: { message: error.message } });
@@ -58,7 +62,9 @@ const startSever = ({ port }) => {
       browser.close();
 
       res.json(data);
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   });
 
   server.listen(port, () => {

@@ -7,9 +7,4 @@ const googleSearch = async (browser, search) => {
   return page;
 };
 
-const delay = (time) =>
-  new Promise((resolve) => {
-    setTimeout(resolve, time);
-  });
-
-module.exports = { googleSearch, delay };
+module.exports = { googleSearch };
