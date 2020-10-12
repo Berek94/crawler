@@ -7,7 +7,7 @@ const startSever = ({ port }) => {
 
   server.get("/currency", async (req, res) => {
     try {
-      const browser = await puppeteer.launch();
+      const browser = await puppeteer.launch({ args: ["--lang=en-GB"] });
 
       const crawlCurrency = async (search) => {
         let page = await googleSearch(browser, search);
