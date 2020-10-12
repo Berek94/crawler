@@ -8,26 +8,23 @@ const startSever = ({ port }) => {
   server.get("/currency", async (req, res) => {
     try {
       const browser = await puppeteer.launch();
-      const currencySelector = "div[data-exchange-rate] span[data-value]";
 
-      const getCurrencyValue = (page) =>
-        page.evaluate(() => {
-          const node = document.querySelector("div[data-exchange-rate] span[data-value]");
+      const crawlCurrency = async (search) => {
+        let page = await googleSearch(browser, search);
+        await page.screenshot({ path: `${search}.png` });
+
+        return page.evaluate(() => {
+          const node = document.querySelector(
+            "div[data-exchange-rate] span[data-value]"
+          );
           return node && node.textContent;
         });
+      };
 
-      let page = await googleSearch(browser, "курс доллара");
-      await page.waitForSelector(currencySelector, {
-        timeout: 5000,
-      });
-      const usd = await getCurrencyValue(page);
-      await page.close();
-
-      page = await googleSearch(browser, "курс евро");
-      await page.waitForSelector(currencySelector, {
-        timeout: 5000,
-      });
-      const eur = await getCurrencyValue(page);
+      const [usd, eur] = await Promise.all([
+        crawlCurrency("курс доллара"),
+        crawlCurrency("курс евро"),
+      ]);
 
       await browser.close();
 
