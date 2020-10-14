@@ -13,6 +13,9 @@ const startSever = ({ port }) => {
 
       const crawlCurrency = async (search) => {
         let page = await googleSearch(browser, search);
+        await page.waitForSelector('div[data-exchange-rate]', {
+          timeout: 5000,
+        });
         await page.screenshot({ path: `${search}.png` });
 
         return page.evaluate(() => {
@@ -33,7 +36,7 @@ const startSever = ({ port }) => {
       if (usd && eur) {
         res.json({ usd, eur });
       } else {
-        throw new Error("Ошибка");
+        throw new Error("Ошибка, нет данных!");
       }
     } catch (error) {
       console.error(error);
