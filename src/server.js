@@ -7,7 +7,9 @@ const startSever = ({ port }) => {
 
   server.get("/currency", async (req, res) => {
     try {
-      const browser = await puppeteer.launch({ args: ["--lang=en-GB"] });
+      const browser = await puppeteer.launch({
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      });
 
       const crawlCurrency = async (search) => {
         let page = await googleSearch(browser, search);
@@ -44,7 +46,11 @@ const startSever = ({ port }) => {
       const width = 400;
       const height = 1000;
       const browser = await puppeteer.launch({
-        args: [`--window-size=${width},${height}`],
+        args: [
+          `--window-size=${width},${height}`,
+          "--no-sandbox",
+          "--disable-setuid-sandbox",
+        ],
       });
       const page = await browser.newPage();
       await page.setViewport({
